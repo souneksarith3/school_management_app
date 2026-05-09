@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:school_management_app/auth/sign_up.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
-  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding();
-  await Supabase.initialize(
-    url: dotenv.env["SUPABASE_URL"] ?? "",
-    anonKey: dotenv.env["SUPABASE_KEY"] ?? "",
-  );
+  await dotenv.load(fileName: ".env");
+  try {
+    await Supabase.initialize(
+      url: dotenv.env["SUPABASE_URL"] ?? "",
+      anonKey: dotenv.env["SUPABASE_KEY"] ?? "",
+    );
+  } catch (e) {
+    print(e.toString());
+  }
   runApp(const MyApp());
 }
 
@@ -17,9 +24,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        textTheme: GoogleFonts.causeTextTheme(),
+      ),
+      home: SignUp(),
     );
   }
 }
