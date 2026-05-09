@@ -8,25 +8,37 @@ class MyMaterialButton extends StatelessWidget {
     super.key,
     //required this.onPressed,
     this.color,
-    this.height,
-    this.width,
+    this.height = 54,
+    this.width = double.infinity,
     this.text,
+    this.textColor,
+    this.onPressed,
   });
 
   //final void Function(void) onPressed;
-  Color? color = MyColor.primaryColor;
+  Color? color = MyColor.primaryColor, textColor = MyColor.textLightColor;
   String? text;
-  double? height = 50, width = double.infinity;
+  double height, width = double.infinity;
+  void Function(void)? onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: height,
       width: width,
       child: MaterialButton(
-        color: color,
-        onPressed:() {},
-        child: MyText(text: text!),
+        color: color ?? MyColor.primaryColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.all(Radius.circular(16)),
+        ),
+        onPressed: () {
+          onPressed;
+        },
+        child: MyText(
+          text: text ?? "",
+          size: 20,
+          color: textColor ?? MyColor.textLightColor,
+        ),
       ),
     );
   }

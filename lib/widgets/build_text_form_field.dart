@@ -24,7 +24,10 @@ class BuildTextFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       onChanged: onChanged,
-      validator: validator,
+      validator: (value) {
+        validator;
+        return null;
+      },
       obscureText: obscureText,
       decoration: InputDecoration(
         border: OutlineInputBorder(

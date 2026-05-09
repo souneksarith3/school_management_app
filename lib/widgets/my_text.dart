@@ -12,7 +12,7 @@ class MyText extends StatelessWidget {
 
   String text;
   double size;
-  Color? color = MyColor.textColor;
+  Color? color = MyColor.textDarkColor;
   bool isBold;
 
   @override

@@ -49,16 +49,31 @@ class SignUp extends StatelessWidget {
                 spacing: 16,
                 children: [
                   MyText(text: "Welcome!", size: 22, isBold: true),
-                  BuildTextFormField(label: "Your Email"),
                   BuildTextFormField(
+                    controller: controller.ctlEmail,
+                    label: "Your Email",
+                    textInputType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value == null || value.isEmail == false) {
+                        return "Invalid email address";
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                  BuildTextFormField(
+                    controller: controller.ctlPassword,
                     label: "Your Password",
                     obscureText: controller.showPassword.value == true
                         ? true
                         : false,
-                    textInputType: TextInputType.emailAddress,
+                    validator: (value) {
+                      controller.passwordValidation(value!);
+                    },
                   ),
 
                   BuildTextFormField(
+                    controller: controller.ctlConfirm,
                     label: "Your Confirm Password",
                     obscureText: controller.showPassword.value == true
                         ? true
@@ -80,8 +95,16 @@ class SignUp extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
-                  //MyMaterialButton()
+
+                  MyMaterialButton(
+                    text: "Sign up",
+                    onPressed: (value) async {
+                      if (controller.signUpFormKey.currentState!.validate() ==
+                          true) {
+                        print("object");
+                      }
+                    },
+                  ),
                 ],
               ),
             ),
