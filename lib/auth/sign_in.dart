@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/get_core.dart';
 import 'package:get/get_instance/get_instance.dart';
-import 'package:get/state_manager.dart';
 import 'package:school_management_app/controllers/auth_controller.dart';
 import 'package:school_management_app/widgets/custom_button.dart';
 import 'package:school_management_app/widgets/custom_text.dart';
 import 'package:school_management_app/widgets/custom_text_field.dart';
 
-class SignUp extends StatelessWidget {
-  SignUp({super.key});
+class SignIn extends StatelessWidget {
+  SignIn({super.key});
 
   AuthController controller = Get.put(AuthController());
 
@@ -15,7 +16,7 @@ class SignUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: CustomText(text: "Sign Up", isBold: true, size: 24),
+        title: CustomText(text: "Sign in", size: 24, isBold: true),
         centerTitle: true,
       ),
       body: _buildBody,
@@ -26,65 +27,56 @@ class SignUp extends StatelessWidget {
     return Padding(
       padding: EdgeInsetsGeometry.symmetric(horizontal: 18),
       child: SingleChildScrollView(
-        child: Column(spacing: 10, children: [_buildForm]),
+        child: Column(spacing: 8, children: [_buildForm]),
       ),
     );
   }
 
   Widget get _buildForm {
-    return Obx(() {
-      return Form(
-        key: controller.signInKeyForm,
+    return Obx(
+      () => Form(
+        key: controller.logInKeyForm,
         child: Column(
-          spacing: 14,
+          spacing: 18,
           children: [
-            SizedBox(height: 20),
-            CustomText(text: "Welcome!", size: 26, isBold: true),
-            SizedBox(height: 10),
+            SizedBox(height: 18),
+            CustomText(text: "Welcome Back!", size: 22, isBold: true),
 
+            SizedBox(height: 8),
             CustomTextField(
-              validator: (value) => controller.emailValidation(value!),
               label: "Enter Email",
               controller: controller.ctlEmail,
+              validator: (value) => controller.emailValidation(value!),
             ),
 
             CustomTextField(
-              validator: (value) => controller.passwordValidation(value!),
               label: "Enter Password",
               controller: controller.ctlPassword,
               obscureText: controller.showPassword.value == true ? false : true,
-            ),
-
-            CustomTextField(
-              validator: (value) => controller.confirmValidator(value!),
-              label: "Enter Confirm Password",
-              controller: controller.ctlConfirm,
-              obscureText: controller.showPassword.value == true ? false : true,
-              onChanged: (value) => controller.confirmValidatorTextChanged(value),
+              validator: (value) => controller.passwordValidation(value!),
             ),
 
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Checkbox(
                   value: controller.showPassword.value,
-                  onChanged: (value) {
-                    controller.showPassword.value = value!;
-                  },
+                  onChanged: (value) => controller.showPassword.value = value!,
                 ),
-                CustomText(text: "Show Password"),
+                CustomText(text: "Show password"),
               ],
             ),
 
             controller.isLoading == true
                 ? CircularProgressIndicator()
                 : CustomButton(
-                    onPressed: controller.signInPressed,
-                    text: "Sign Up",
+                    onPressed: () async => controller.isLoading == true
+                        ? null
+                        : controller.logInPressed(),
+                    text: "Log In",
                   ),
           ],
         ),
-      );
-    });
+      ),
+    );
   }
 }
